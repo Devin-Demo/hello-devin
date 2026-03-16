@@ -9,7 +9,7 @@ import { User } from './user/user.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'sqlite',
+      type: 'better-sqlite3',
       database: 'db.sqlite',
       entities: [User],
       synchronize: true,
