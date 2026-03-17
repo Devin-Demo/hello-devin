@@ -4,6 +4,10 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "backend": "npm run start:dev --workspace packages/backend",
+    "frontend": "npm run dev --workspace packages/frontend"
+  },
   "dependencies": {},
   "devDependencies": {
     "lerna": "^9.0.7"
