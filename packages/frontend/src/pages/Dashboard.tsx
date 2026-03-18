@@ -7,7 +7,7 @@ const stats = [
     change: '+12.5%',
     icon: (
       <svg
-        className="w-6 h-6 text-indigo-600"
+        className="w-6 h-6 text-indigo-600 dark:text-indigo-400"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -27,7 +27,7 @@ const stats = [
     change: '+8.2%',
     icon: (
       <svg
-        className="w-6 h-6 text-green-600"
+        className="w-6 h-6 text-green-600 dark:text-green-400"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -47,7 +47,7 @@ const stats = [
     change: '+3.1%',
     icon: (
       <svg
-        className="w-6 h-6 text-blue-600"
+        className="w-6 h-6 text-blue-600 dark:text-blue-400"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -67,7 +67,7 @@ const stats = [
     change: '+18.7%',
     icon: (
       <svg
-        className="w-6 h-6 text-purple-600"
+        className="w-6 h-6 text-purple-600 dark:text-purple-400"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -89,8 +89,8 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           Welcome back, {user?.firstName} {user?.lastName}! Here&apos;s what&apos;s
           happening.
         </p>
@@ -100,17 +100,17 @@ export default function Dashboard() {
         {stats.map((stat) => (
           <div
             key={stat.name}
-            className="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6"
           >
             <div className="flex items-center justify-between">
-              <div className="p-2 bg-gray-50 rounded-lg">{stat.icon}</div>
-              <span className="text-sm font-medium text-green-600">
+              <div className="p-2 bg-gray-50 dark:bg-gray-700 rounded-lg">{stat.icon}</div>
+              <span className="text-sm font-medium text-green-600 dark:text-green-400">
                 {stat.change}
               </span>
             </div>
             <div className="mt-4">
-              <h3 className="text-sm font-medium text-gray-500">{stat.name}</h3>
-              <p className="mt-1 text-2xl font-bold text-gray-900">
+              <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{stat.name}</h3>
+              <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-white">
                 {stat.value}
               </p>
             </div>
@@ -119,8 +119,8 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             Recent Activity
           </h2>
           <div className="space-y-4">
@@ -133,7 +133,7 @@ export default function Dashboard() {
             ].map((activity, i) => (
               <div
                 key={i}
-                className="flex items-center space-x-3 text-sm text-gray-600"
+                className="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-300"
               >
                 <div className="w-2 h-2 bg-indigo-500 rounded-full" />
                 <span>{activity}</span>
@@ -142,8 +142,8 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             Quick Actions
           </h2>
           <div className="grid grid-cols-2 gap-3">
@@ -155,7 +155,7 @@ export default function Dashboard() {
             ].map((action) => (
               <button
                 key={action}
-                className="p-3 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors border border-gray-200"
+                className="p-3 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors border border-gray-200 dark:border-gray-600"
               >
                 {action}
               </button>
