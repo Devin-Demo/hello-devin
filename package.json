@@ -6,7 +6,9 @@
   ],
   "scripts": {
     "backend": "npm run start:dev --workspace packages/backend",
-    "frontend": "npm run dev --workspace packages/frontend"
+    "frontend": "npm run dev --workspace packages/frontend",
+    "client-sdk:generate": "npm run generate --workspace packages/client-sdk",
+    "client-sdk:build": "npm run build --workspace packages/client-sdk"
   },
   "dependencies": {},
   "devDependencies": {
