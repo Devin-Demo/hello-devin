@@ -1,4 +1,17 @@
-const BASE_URL = 'http://localhost:3000';
+import {
+  OpenAPI,
+  AuthService,
+  type RegisterDto,
+  type LoginDto,
+  type UpdateAccountDto,
+  type UpdatePasswordDto,
+} from '@hello-devin/client-sdk';
+
+// Configure the SDK base URL from environment variable
+OpenAPI.BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+
+// Configure the SDK to use the token from localStorage
+OpenAPI.TOKEN = async () => getToken() || '';
 
 function getToken(): string | null {
   return localStorage.getItem('token');
@@ -10,33 +23,6 @@ function setToken(token: string): void {
 
 function removeToken(): void {
   localStorage.removeItem('token');
-}
-
-async function request<T>(
-  path: string,
-  options: RequestInit = {},
-): Promise<T> {
-  const token = getToken();
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-    ...((options.headers as Record<string, string>) || {}),
-  };
-
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-
-  const response = await fetch(`${BASE_URL}${path}`, {
-    ...options,
-    headers,
-  });
-
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({ message: 'Request failed' }));
-    throw new Error((error as { message?: string }).message || 'Request failed');
-  }
-
-  return response.json() as Promise<T>;
 }
 
 export interface AuthResponse {
@@ -56,55 +42,28 @@ export interface UserProfile {
   lastName: string;
 }
 
-export async function register(data: {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-}): Promise<AuthResponse> {
-  const result = await request<AuthResponse>('/auth/register', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  });
+export async function register(data: RegisterDto): Promise<AuthResponse> {
+  const result = (await AuthService.authControllerRegister(data)) as AuthResponse;
   setToken(result.access_token);
   return result;
 }
 
-export async function login(data: {
-  email: string;
-  password: string;
-}): Promise<AuthResponse> {
-  const result = await request<AuthResponse>('/auth/login', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  });
+export async function login(data: LoginDto): Promise<AuthResponse> {
+  const result = (await AuthService.authControllerLogin(data)) as AuthResponse;
   setToken(result.access_token);
   return result;
 }
 
 export async function getAccount(): Promise<UserProfile> {
-  return request<UserProfile>('/auth/account');
+  return (await AuthService.authControllerGetAccount()) as UserProfile;
 }
 
-export async function updateAccount(data: {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-}): Promise<UserProfile> {
-  return request<UserProfile>('/auth/account', {
-    method: 'PATCH',
-    body: JSON.stringify(data),
-  });
+export async function updateAccount(data: UpdateAccountDto): Promise<UserProfile> {
+  return (await AuthService.authControllerUpdateAccount(data)) as UserProfile;
 }
 
-export async function updatePassword(data: {
-  currentPassword: string;
-  newPassword: string;
-}): Promise<{ message: string }> {
-  return request<{ message: string }>('/auth/password', {
-    method: 'PATCH',
-    body: JSON.stringify(data),
-  });
+export async function updatePassword(data: UpdatePasswordDto): Promise<{ message: string }> {
+  return (await AuthService.authControllerUpdatePassword(data)) as { message: string };
 }
 
 export { getToken, setToken, removeToken };
