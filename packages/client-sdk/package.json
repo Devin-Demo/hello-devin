@@ -4,7 +4,9 @@
   "description": "OpenAPI-generated TypeScript client SDK for Hello Devin backend services",
   "private": true,
   "license": "UNLICENSED",
+  "type": "module",
   "main": "dist/index.js",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
