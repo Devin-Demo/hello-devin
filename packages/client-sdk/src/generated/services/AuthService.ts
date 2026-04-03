@@ -2,8 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { ForgotPasswordDto } from '../models/ForgotPasswordDto';
 import type { LoginDto } from '../models/LoginDto';
 import type { RegisterDto } from '../models/RegisterDto';
+import type { ResetPasswordDto } from '../models/ResetPasswordDto';
 import type { UpdateAccountDto } from '../models/UpdateAccountDto';
 import type { UpdatePasswordDto } from '../models/UpdatePasswordDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -97,6 +99,44 @@ export class AuthService {
             mediaType: 'application/json',
             errors: {
                 401: `Unauthorized or wrong password`,
+            },
+        });
+    }
+    /**
+     * Request a password reset token
+     * @param requestBody
+     * @returns any Reset token generated
+     * @throws ApiError
+     */
+    public static authControllerForgotPassword(
+        requestBody: ForgotPasswordDto,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/auth/forgot-password',
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                404: `Email not found`,
+            },
+        });
+    }
+    /**
+     * Reset password using a reset token
+     * @param requestBody
+     * @returns any Password reset successfully
+     * @throws ApiError
+     */
+    public static authControllerResetPassword(
+        requestBody: ResetPasswordDto,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/auth/reset-password',
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                400: `Invalid or expired token`,
             },
         });
     }

@@ -5,6 +5,8 @@ import {
   type LoginDto,
   type UpdateAccountDto,
   type UpdatePasswordDto,
+  type ForgotPasswordDto,
+  type ResetPasswordDto,
 } from '@hello-devin/client-sdk';
 
 // Configure the SDK base URL from environment variable
@@ -64,6 +66,14 @@ export async function updateAccount(data: UpdateAccountDto): Promise<UserProfile
 
 export async function updatePassword(data: UpdatePasswordDto): Promise<{ message: string }> {
   return (await AuthService.authControllerUpdatePassword(data)) as { message: string };
+}
+
+export async function forgotPassword(data: ForgotPasswordDto): Promise<{ message: string; resetToken: string }> {
+  return (await AuthService.authControllerForgotPassword(data)) as { message: string; resetToken: string };
+}
+
+export async function resetPassword(data: ResetPasswordDto): Promise<{ message: string }> {
+  return (await AuthService.authControllerResetPassword(data)) as { message: string };
 }
 
 export { getToken, setToken, removeToken };

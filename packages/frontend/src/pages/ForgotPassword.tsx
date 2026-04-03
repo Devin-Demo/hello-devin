@@ -1,25 +1,29 @@
 import { useState, type FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
+import { forgotPassword } from '../services/api';
 
-export default function Login() {
+export default function ForgotPassword() {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [resetToken, setResetToken] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
-  const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
+    setResetToken('');
     setLoading(true);
 
     try {
-      await login(email, password);
-      navigate('/dashboard');
+      const result = await forgotPassword({ email });
+      setSuccess(result.message);
+      setResetToken(result.resetToken);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed');
+      setError(
+        err instanceof Error ? err.message : 'Failed to process request',
+      );
     } finally {
       setLoading(false);
     }
@@ -31,7 +35,7 @@ export default function Login() {
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900">Hello Devin</h1>
           <p className="mt-2 text-sm text-gray-600">
-            Sign in to your account
+            Reset your password
           </p>
         </div>
 
@@ -42,6 +46,25 @@ export default function Login() {
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
               {error}
+            </div>
+          )}
+
+          {success && (
+            <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
+              {success}
+            </div>
+          )}
+
+          {resetToken && (
+            <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-lg text-sm">
+              <p className="font-medium mb-1">Reset Token (demo only):</p>
+              <p className="break-all font-mono text-xs">{resetToken}</p>
+              <Link
+                to={`/reset-password?token=${resetToken}`}
+                className="mt-2 inline-block text-indigo-600 hover:text-indigo-500 font-medium"
+              >
+                Click here to reset your password
+              </Link>
             </div>
           )}
 
@@ -63,33 +86,6 @@ export default function Login() {
                 placeholder="you@example.com"
               />
             </div>
-
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-colors"
-                placeholder="Enter your password"
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-end">
-            <Link
-              to="/forgot-password"
-              className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-            >
-              Forgot password?
-            </Link>
           </div>
 
           <button
@@ -97,16 +93,16 @@ export default function Login() {
             disabled={loading}
             className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            {loading ? 'Signing in...' : 'Login'}
+            {loading ? 'Sending...' : 'Send Reset Link'}
           </button>
 
           <p className="text-center text-sm text-gray-600">
-            Don&apos;t have an account?{' '}
+            Remember your password?{' '}
             <Link
-              to="/register"
+              to="/login"
               className="font-medium text-indigo-600 hover:text-indigo-500"
             >
-              Create Account
+              Back to Login
             </Link>
           </p>
         </form>

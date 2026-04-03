@@ -5,13 +5,14 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { User } from './user/user.entity';
+import { PasswordResetToken } from './auth/password-reset-token.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'better-sqlite3',
       database: 'db.sqlite',
-      entities: [User],
+      entities: [User, PasswordResetToken],
       synchronize: true,
     }),
     AuthModule,
